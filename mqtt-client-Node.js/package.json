@@ -1,0 +1,9 @@
+{
+  "name": "client-node.js",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "Apache",
+  "dependencies": {
+    "mqtt": "^4.1.0"
+  }
+}
