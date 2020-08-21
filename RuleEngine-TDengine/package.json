@@ -1,0 +1,11 @@
+{
+  "name": "code",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "mockjs": "^1.1.0",
+    "mqtt": "^4.1.0"
+  }
+}
