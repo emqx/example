@@ -16,8 +16,8 @@ public class MqttExample implements MqttCallback {
         String clientId = MqttClient.generateClientId();
         boolean cleanSession = true;
         boolean ssl = false;
-        String password = null;
-        String userName = null;
+        String userName = "emqx";
+        String password = "public";
         for (int i = 0; i < args.length; i++) {
             if (args[i].length() == 2 && args[i].startsWith("-")) {
                 char arg = args[i].charAt(1);
@@ -189,11 +189,11 @@ public class MqttExample implements MqttCallback {
         System.out.println(
                 "Args:\n" +
                         "-h Help information\n" +
-                        "-h MQTT server hostname or IP address [default: broker.emqx.io]\n" +
+                        "-b MQTT server hostname or IP address [default: broker.emqx.io]\n" +
                         "-p MQTT server port [default: 1883]\n" +
                         "-a Publish/Subscribe action [default: publish]\n" +
-                        "-u Username\n" +
-                        "-p Password\n" +
+                        "-u Username [default: emqx]\n" +
+                        "-z Password [default: public]\n" +
                         "-c Clean session [default: true]\n" +
                         "-t Publish/Subscribe topic\n" +
                         "-q QoS [default: 0]\n" +
