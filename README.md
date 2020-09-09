@@ -10,6 +10,7 @@
 - [Java MQTT 客户端](./mqtt-client-Java)
 - [Node.js MQTT 客户端](./mqtt-client-Node.js)
 - [Android 安卓 MQTT 客户端](./mqtt-client-Android)
+- [Python MQTT 客户端](./mqtt-client-Python3)
 
 ## 提交示例基础要求
 
