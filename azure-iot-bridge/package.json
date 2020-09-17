@@ -1,0 +1,11 @@
+{
+  "name": "azure-iot-bridge",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "azure-iot-device": "^1.17.1",
+    "azure-iot-device-mqtt": "^1.15.1",
+    "mqtt": "^4.2.1"
+  }
+}
