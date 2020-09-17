@@ -1,23 +1,18 @@
-# Node.js MQTT 客户端使用示例
+# Python MQTT client examples
+In this example we provide example code for TCP, Websocket, TLS, and Websockets protocols to connect to the MQTT Broker.
+For more documentation on the use of the python paho-mqtt client, see the [Python Client - documentation](https://www.eclipse.org/paho/index.php?page=clients/python/docs/index.php)
 
-- 语言：Python3
-- 客户端库：[paho-mqtt](https://pypi.org/project/paho-mqtt/)
+## Prerequisites
+* It supports Python 3.4+
 
-## 安装依赖
 
-安装 paho-mqtt
-
-使用 pip 安装
-
-```shell script
+## Installation
+```bash
 pip install paho-mqtt
 ```
 
-或者下载源码安装
 
-```shell script
-git clone https://github.com/eclipse/paho.mqtt.python
-cd paho.mqtt.python
-python setup.py install
-```
-
+## Run
+```bash
+python3 pub_sub_tcp.py
+``` 
