@@ -7,7 +7,7 @@ import (
 )
 
 var Host     = flag.String("host", "broker.emqx.io", "server hostname or IP")
-var	Port     = flag.Int("port", 1883, "server port")
+var Port     = flag.Int("port", 1883, "server port")
 var Action   = flag.String("action", "pubsub", "pub/sub/pubsub action")
 var Protocol = flag.String("protocol", "mqtt", "mqtt/mqtts/ws/wss")
 var Topic    = flag.String("topic", "golang-mqtt/test", "publish/subscribe topic")
