@@ -4,10 +4,11 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
-	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"io/ioutil"
 	"log"
 	"time"
+
+	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
 
 func connectByMQTT(config Config) mqtt.Client {

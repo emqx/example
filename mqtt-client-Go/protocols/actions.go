@@ -2,12 +2,13 @@ package protocols
 
 import (
 	"fmt"
-	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"log"
 	"time"
+
+	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
 
-func Pub(client mqtt.Client, topic string){
+func Pub(client mqtt.Client, topic string) {
 	pubClient := client
 	i := 1
 	for {
@@ -19,7 +20,7 @@ func Pub(client mqtt.Client, topic string){
 	}
 }
 
-func Sub(client mqtt.Client, topic string){
+func Sub(client mqtt.Client, topic string) {
 	subClient := client
 	subClient.Subscribe(topic, 0, func(subClient mqtt.Client, msg mqtt.Message) {
 		log.Printf("sub [%s] %s\n", msg.Topic(), string(msg.Payload()))
@@ -29,7 +30,7 @@ func Sub(client mqtt.Client, topic string){
 	}
 }
 
-func PubSub(client mqtt.Client, topic string){
+func PubSub(client mqtt.Client, topic string) {
 	go Sub(client, topic)
 	Pub(client, topic)
 }
