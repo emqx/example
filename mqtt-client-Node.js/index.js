@@ -1,50 +1,65 @@
+const fs = require('fs')
 const mqtt = require('mqtt')
+const { Command } = require('commander')
+
+const program = new Command()
+program
+  .option('-p, --protocol <type>', 'connect protocol: mqtt, mqtts, ws, wss. default is mqtt', 'mqtt')
+  .parse(process.argv)
+
 
 const HOST = 'broker.emqx.io'
-const PORT = 1883
-const WS_PORT = 8083
-const WSS_PORT = 8083
+const DEF_PORT = 1883
+const TOPIC= `node-js/${program.protocol}`
 
-const TOPIC = 't/0'
-const SHARE_TOPIC = '$queue/t/1'
-const SHARE_GROUP_TOPIC = '$share/group1/t/2'
-const SHARE_GROUP_TOPIC_2 = '$share/group2/t/2'
-
-// 连接选项
-const options = {
+// connect options
+const OPTIONS = {
   clean: true,
-  connectTimeout: 4000, // 超时时间
-  // 认证信息
+  connectTimeout: 4000,
   clientId: `mqtt_${Math.random().toString(16).slice(3)}`,
   username: 'emqx',
   password: 'public',
+  reconnectPeriod: 1000,
 }
+// protocol list
+const PROTOCOLS = ['mqtt', 'mqtts', 'ws', 'wss']
 
-// 连接字符串, 通过协议指定使用的连接方式
-// ws 未加密 WebSocket 连接
-// wss 加密 WebSocket 连接
-// mqtt 未加密 TCP 连接
-// mqtts 加密 TCP 连接
-// wxs 微信小程序连接
-// alis 支付宝小程序连接
-const connectUrl = `mqtt://${HOST}:${PORT}`
-const client = mqtt.connect(connectUrl, options)
+// default is mqtt, unencrypted tcp connection
+let connectUrl = `mqtt://${HOST}:${DEF_PORT}`
+if (program.protocol && PROTOCOLS.indexOf(program.protocol) === -1) {
+  console.log('protocol must one of mqtt, mqtts, ws, wss.')
+} else if (program.protocol === 'mqtts') {
+  // mqtts， encrypted tcp connection
+  connectUrl = `mqtts://${HOST}:8883`
+  OPTIONS['ca'] = fs.readFileSync('./broker.emqx.io-ca.crt')
+} else if (program.protocol === 'ws') {
+  // ws, unencrypted WebSocket connection
+  const mountPath = '/mqtt' // mount path, connect emqx via WebSocket
+  connectUrl = `ws://${HOST}:8083${mountPath}`
+} else if (program.protocol === 'wss') {
+  // wss, encrypted WebSocket connection
+  const mountPath = '/mqtt' // mount path, connect emqx via WebSocket
+  connectUrl = `wss://${HOST}:8084${mountPath}`
+  OPTIONS['ca'] = fs.readFileSync('./broker.emqx.io-ca.crt')
+} else {}
 
-client.on('reconnect', (error) => {
-  console.log('正在重连:', error)
-})
-
-client.on('error', (error) => {
-  console.log('连接失败:', error)
-})
+const client = mqtt.connect(connectUrl, OPTIONS)
 
 client.on('connect', () => {
-  console.log('连接成功')
-  client.subscribe([TOPIC, SHARE_GROUP_TOPIC, SHARE_GROUP_TOPIC_2], () => {
-    console.log('订阅成功')
+  console.log(`${program.protocol}: Connected`)
+  client.subscribe([TOPIC], () => {
+    console.log(`${program.protocol}: Subscribe to topic '${TOPIC}'`)
   })
 })
 
+client.on('reconnect', (error) => {
+  console.log(`Reconnecting(${program.protocol}):`, error)
+})
+
+client.on('error', (error) => {
+  console.log(`Cannot connect(${program.protocol}):`, error)
+})
+
 client.on('message', (topic, payload) => {
-  console.log('收到消息：', topic, payload.toString())
+  console.log('Received Message:', topic, payload.toString())
 })
